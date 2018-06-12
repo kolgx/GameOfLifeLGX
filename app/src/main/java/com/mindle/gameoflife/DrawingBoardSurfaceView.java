@@ -102,7 +102,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     }
 
     public void initGame(int[][] matrix) {
-        this.num = matrix.length;
+        num = matrix.length;
         initGame(new Creatures(matrix.length, matrix));
     }
 

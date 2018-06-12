@@ -86,9 +86,7 @@ public class GamePageActivity extends AppCompatActivity {
         iniBtn.setOnClickListener((v -> {
             setTitle(R.string.app_name);
             surfaceView.initGame();
-            mPauseContinueBtn.setText("开始");
-            mPauseContinueBtn.setTextColor(Color.GREEN);
-            mPauseContinueBtn.setEnabled(true);
+            afterInitGame();
         }));
         mPauseContinueBtn.setOnClickListener(v -> {
             if ("暂停".contentEquals(mPauseContinueBtn.getText())) {
@@ -98,6 +96,22 @@ public class GamePageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        onPauseButton();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == RESULT_OK
+                && data.getData() != null) {
+            Uri uri = data.getData();
+            grantUriPermission(getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            beginLoadJson(uri);
+        }
     }
 
     @Override
@@ -123,14 +137,6 @@ public class GamePageActivity extends AppCompatActivity {
         }
     }
 
-    private void showAboutDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setMessage(R.string.about_text)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -139,7 +145,8 @@ public class GamePageActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     beginOpenJson();
                 } else {
-                    Toast.makeText(this, R.string.read_permission_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.read_permission_failed,
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -147,13 +154,12 @@ public class GamePageActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == RESULT_OK && data.getData() != null) {
-            Uri uri = data.getData();
-            grantUriPermission(getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            beginLoadJson(uri);
-        }
+    private void showAboutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.app_name)
+                .setMessage(R.string.about_text)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void beginLoadJson(Uri uri) {
@@ -161,8 +167,8 @@ public class GamePageActivity extends AppCompatActivity {
         new JsonFileLoadTask().execute(uri);
     }
 
-
     private class JsonFileLoadTask extends AsyncTask<Uri, Integer, String> {
+
         @Override
         protected String doInBackground(Uri... uris) {
             Uri uri = uris[0];
@@ -217,6 +223,7 @@ public class GamePageActivity extends AppCompatActivity {
             if (matrix != null) {
                 setTitle(jsonFileName);
                 surfaceView.initGame(matrix);
+                afterInitGame();
             } else {
                 Toast.makeText(getApplicationContext(), R.string.parse_json_error,
                         Toast.LENGTH_SHORT).show();
@@ -227,6 +234,12 @@ public class GamePageActivity extends AppCompatActivity {
         } finally {
             mProgressBar.setVisibility(View.GONE);
         }
+    }
+
+    private void afterInitGame() {
+        mPauseContinueBtn.setText("开始");
+        mPauseContinueBtn.setTextColor(Color.GREEN);
+        mPauseContinueBtn.setEnabled(true);
     }
 
     private void checkReadPermissionThenOpen() {
@@ -249,17 +262,9 @@ public class GamePageActivity extends AppCompatActivity {
     private void loadSampleArray() {
         sampleStatusIndex = sampleStatusIndex % StatusFactory.SAMPLE_STATUS_ARRAY.length;
         surfaceView.initGame(StatusFactory.SAMPLE_STATUS_ARRAY[sampleStatusIndex]);
-        mPauseContinueBtn.setText("开始");
-        mPauseContinueBtn.setTextColor(Color.GREEN);
-        mPauseContinueBtn.setEnabled(true);
+        afterInitGame();
         setTitle(StatusFactory.SAMPLE_STATUS_ARRAY[sampleStatusIndex]);
         sampleStatusIndex++;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        onPauseButton();
     }
 
     private void onPauseButton() {

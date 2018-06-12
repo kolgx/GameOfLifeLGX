@@ -22,3 +22,4 @@
 ### 相关链接
 
 - [安卓安装包](app/release/app-release.apk "点击下载")
+- [示例json文件](jsonDemo/5x5.json "jsonDemo/5x5.json")
