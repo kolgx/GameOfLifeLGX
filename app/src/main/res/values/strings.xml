@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">game of life</string>
+    <string name="load_sample">使用标准模型初始化细胞</string>
+    <string name="alive_creature_describe">活着的细胞个数：</string>
+    <string name="generation_describe">进化代数：</string>
+    <string name="hint_black">黑色为空位置</string>
+    <string name="hint_white">白色为一代细胞</string>
+    <string name="hint_cyan">浅绿为二代细胞</string>
+    <string name="hint_green">绿色为三代细胞</string>
+    <string name="hint_yellow">黄色为四代以上细胞</string>
+</resources>
