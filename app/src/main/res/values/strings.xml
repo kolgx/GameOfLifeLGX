@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">game of life</string>
-    <string name="load_sample">使用标准模型初始化细胞</string>
+    <string name="load_json">本地json数组初始化</string>
+    <string name="load_sample">默认数组初始化</string>
+    <string name="about">关于...</string>
     <string name="alive_creature_describe">活着的细胞个数：</string>
     <string name="generation_describe">进化代数：</string>
     <string name="hint_black">黑色为空位置</string>
@@ -8,4 +10,8 @@
     <string name="hint_cyan">浅绿为二代细胞</string>
     <string name="hint_green">绿色为三代细胞</string>
     <string name="hint_yellow">黄色为四代以上细胞</string>
+    <string name="read_permission_failed">请允许读权限来打开本地文件</string>
+    <string name="open_model_error">读取文件失败！</string>
+    <string name="parse_json_error">解析json文件失败，json文件应该为整型二维数组！</string>
+    <string name="about_text">本应用允许你模拟生存规则为2不变、3新生、其他数量死亡的“生命游戏”，同时存储了若干个有趣的初始细胞状态。你也可以通过载入写好的保存二维整数数组的json文件，来设置细胞的初始状态，但是目前仅支持n*n的二维数组。</string>
 </resources>

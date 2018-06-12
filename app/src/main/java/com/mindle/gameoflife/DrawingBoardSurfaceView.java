@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = "DrawingBoardSurfaceView";
     private static final int MESSAGE_UPDATA_UI = 0;
-    private static final int NUM = 100;
+    private static int num = 100;
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -91,18 +91,25 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     }
 
     public void initGame() {
-        initGame(new Creatures(NUM));
+        num = 100;
+        initGame(new Creatures(num));
     }
 
     public void initGame(String mode) {
+        num = 100;
         int[][] matrix = StatusFactory.getSampleStatus(mode);
-        initGame(new Creatures(NUM, matrix));
+        initGame(new Creatures(num, matrix));
+    }
+
+    public void initGame(int[][] matrix) {
+        this.num = matrix.length;
+        initGame(new Creatures(matrix.length, matrix));
     }
 
     private void initGame(Creatures c) {
         int viewHeight = getHeight(), viewWidth = getWidth();
         mWidth = viewWidth < viewHeight ? viewWidth : viewHeight;
-        mGridUnit = mWidth / NUM;
+        mGridUnit = mWidth / num;
 
         mIsPaused.set(true);
         creatures = c;
@@ -136,8 +143,8 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         filledSquare(canvas, paint, mWidth / 2, mWidth / 2, mWidth / 2);
 
         // draw n-by-n grid
-        for (int row = 0; row < NUM; row++) {
-            for (int col = 0; col < NUM; col++) {
+        for (int row = 0; row < num; row++) {
+            for (int col = 0; col < num; col++) {
                 if (livingStatus[row][col] == 0) {
                     continue;
                 } else if (livingStatus[row][col] == 1) {
@@ -174,17 +181,23 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
             while (!mIsPaused.get()) {
                 try {
                     creatures.nextTime();
-                    canvas = mHolder.lockCanvas();
-                    draw(canvas, paint);
-                    Message msg = new Message();
-                    int[] data = {creatures.getAliveNum(), creatures.getGeneration()};
-                    msg.obj = data;
-                    mHandler.sendMessage(msg);
+                    if (mHolder.getSurface().isValid()) {
+                        canvas = mHolder.lockCanvas();
+                    }
+                    if (canvas != null && canvas.getWidth() > 0) {
+                        draw(canvas, paint);
+                        Message msg = new Message();
+                        int[] data = {creatures.getAliveNum(), creatures.getGeneration()};
+                        msg.obj = data;
+                        mHandler.sendMessage(msg);
+                    }
                     Thread.sleep(sleepTime.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    mHolder.unlockCanvasAndPost(canvas);
+                    if (mHolder.getSurface().isValid()) {
+                        mHolder.unlockCanvasAndPost(canvas);
+                    }
                 }
             }
         }
