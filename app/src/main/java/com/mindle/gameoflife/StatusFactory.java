@@ -10,6 +10,7 @@ public class StatusFactory {
     private static final String STATUS_GOSPER_GLIDER_GUN = "Gosper glider gun";
     private static final String STATUS_DIEHARD = "Diehard";
     private static final String STATUS_INFINITE_LINE = "Infinite line";
+    private static final String STATUS_LGX = "LiangGX";
 
     public static final String[] SAMPLE_STATUS_ARRAY = {
             STATUS_PULSAR,
@@ -18,7 +19,8 @@ public class StatusFactory {
             STATUS_PENTADECATHLON,
             STATUS_DIEHARD,
             STATUS_INFINITE_LINE,
-            STATUS_GOSPER_GLIDER_GUN};
+            STATUS_GOSPER_GLIDER_GUN,
+            STATUS_LGX};
 
     private static int[][] sMatrix;
 
@@ -47,6 +49,8 @@ public class StatusFactory {
             case STATUS_LWSS:
                 matrix = getLWSS();
                 break;
+            case STATUS_LGX:
+                matrix = getLianggx();
         }
         return matrix;
     }
@@ -58,6 +62,19 @@ public class StatusFactory {
                 sMatrix[row][col] = 0;
             }
         }
+    }
+
+    private static int[][] getLianggx(){
+        initMatrix();
+        sMatrix[50][50] = 1;
+        sMatrix[49][51] = 1;
+        sMatrix[49][52] = 1;
+        sMatrix[50][53] = 1;
+        sMatrix[51][51] = 1;
+        sMatrix[51][52] = 1;
+        sMatrix[52][51] = 1;
+
+        return sMatrix;
     }
 
     private static int[][] getGosperGliderGun() {
