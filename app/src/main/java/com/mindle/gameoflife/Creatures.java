@@ -12,6 +12,7 @@ public class Creatures {
     private int[][] livingStatus;
     private int[][] nodesTmp;
     private int generation;
+    private boolean isLimit = false;
 
     public Creatures(int num) {
         initCreatures(num, null);
@@ -44,11 +45,13 @@ public class Creatures {
         calculateAliveNum();
     }
 
+    public void setLimit(boolean limit){this.isLimit = limit;}
+
     public void nextTime() {
         generation++;
         for (int i = 0; i < num; i++) {
             for (int j = 0; j < num; j++) {
-                switch (countLivingsAround(i, j)) {
+                switch (isLimit?countLivingsAroundLimit(i,j):countLivingsAround(i, j)) {
                     case 2: // not change
                         if (livingStatus[i][j] != 0) {
                             if (livingStatus[i][j] <= 3) {
@@ -123,6 +126,22 @@ public class Creatures {
 
     private int countLivingsAround(int row, int col) {
         int sum = 0;
+
+        sum += livingStatus[row - 1 < 0 ? num - 1 : row - 1][col - 1 < 0 ? num - 1 : col - 1] != 0 ? 1 : 0;
+        sum += livingStatus[row - 1 < 0 ? num - 1 : row - 1][col] != 0 ? 1 : 0;
+        sum += livingStatus[row - 1 < 0 ? num - 1 : row - 1][col + 1 >= num ? 0 : col + 1] != 0 ? 1 : 0;
+        sum += livingStatus[row][col - 1 < 0 ? num - 1 : col - 1] != 0 ? 1 : 0;
+        sum += livingStatus[row][col + 1 >= num ? 0 : col + 1] != 0 ? 1 : 0;
+        sum += livingStatus[row + 1 >= num ? 0 : row + 1][col - 1 < 0 ? num - 1 : col - 1] != 0 ? 1 : 0;
+        sum += livingStatus[row + 1 >= num ? 0 : row + 1][col] != 0 ? 1 : 0;
+        sum += livingStatus[row + 1 >= num ? 0 : row + 1][col + 1 >= num ? 0 : col + 1] != 0 ? 1 : 0;
+
+        return sum;
+    }
+
+    private int countLivingsAroundLimit(int row, int col) {
+        int sum = 0;
+
         if (row >= 1) {
             sum += (livingStatus[row - 1][col] != 0) ? 1 : 0;
             if (col - 1 >= 0 && livingStatus[row - 1][col - 1] != 0) {
@@ -144,9 +163,16 @@ public class Creatures {
         if (col - 1 >= 0 && livingStatus[row][col - 1] != 0) {
             sum++;
         }
+        if (col - 1 < 0 && livingStatus[row][num - 1] != 0) {
+            sum++;
+        }
         if (col + 1 < num && livingStatus[row][col + 1] != 0) {
             sum++;
         }
+        if (col + 1 >= num && livingStatus[row][0] != 0) {
+            sum++;
+        }
+
         return sum;
     }
 }

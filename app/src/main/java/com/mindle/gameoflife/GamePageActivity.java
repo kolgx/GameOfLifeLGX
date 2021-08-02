@@ -114,9 +114,12 @@ public class GamePageActivity extends AppCompatActivity {
         }
     }
 
+    MenuItem menuss = null;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menuss = menu.findItem(R.id.menu_limit);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -131,6 +134,14 @@ public class GamePageActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_about:
                 showAboutDialog();
+                return true;
+            case R.id.menu_limit:
+                if("开启边界线".equals(menuss.getTitle())){
+                    menuss.setTitle("关闭边境线");
+                }
+                else {
+                    menuss.setTitle("开启边界线");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
