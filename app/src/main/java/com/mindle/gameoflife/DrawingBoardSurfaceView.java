@@ -48,6 +48,15 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
 
     Context context;
     SurfaceHolder mHolder;
+    private boolean limit = false;
+
+    public boolean isLimit() {
+        return limit;
+    }
+
+    public void setLimit(boolean limit) {
+        this.limit = limit;
+    }
 
     public DrawingBoardSurfaceView(Context context) {
         super(context);
@@ -180,6 +189,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
 
             while (!mIsPaused.get()) {
                 try {
+                    creatures.setLimit(limit);
                     creatures.nextTime();
                     if (mHolder.getSurface().isValid()) {
                         canvas = mHolder.lockCanvas();

@@ -39,6 +39,8 @@ public class GamePageActivity extends AppCompatActivity {
     private static final int OPEN_DOCUMENT_REQUEST = 101;
 
     private static String TAG = "GamePageActivity";
+    private static String LIMIT_ON = "开启边界线";
+    private static String LIMIT_OFF = "关闭边境线";
     private static int sampleStatusIndex;
 
     private DrawingBoardSurfaceView surfaceView = null;
@@ -120,6 +122,7 @@ public class GamePageActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menuss = menu.findItem(R.id.menu_limit);
+        if(surfaceView.isLimit())menuss.setTitle(LIMIT_OFF);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -136,11 +139,13 @@ public class GamePageActivity extends AppCompatActivity {
                 showAboutDialog();
                 return true;
             case R.id.menu_limit:
-                if("开启边界线".equals(menuss.getTitle())){
-                    menuss.setTitle("关闭边境线");
+                if(LIMIT_ON.equals(menuss.getTitle())){
+                    menuss.setTitle(LIMIT_OFF);
+                    surfaceView.setLimit(true);
                 }
                 else {
-                    menuss.setTitle("开启边界线");
+                    menuss.setTitle(LIMIT_ON);
+                    surfaceView.setLimit(false);
                 }
                 return true;
             default:

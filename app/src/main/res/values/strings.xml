@@ -2,6 +2,7 @@
     <string name="app_name">game of life</string>
     <string name="load_json">本地json数组初始化</string>
     <string name="load_sample">默认数组初始化</string>
+    <string name="limit_set">开启边界线</string>
     <string name="about">关于...</string>
     <string name="alive_creature_describe">活着的细胞个数：</string>
     <string name="generation_describe">进化代数：</string>

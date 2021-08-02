@@ -14,7 +14,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_limit"
-        android:title="开启边界线" />
+        android:title="@string/limit_set" />
     <item
         android:id="@+id/menu_about"
         android:title="@string/about"
