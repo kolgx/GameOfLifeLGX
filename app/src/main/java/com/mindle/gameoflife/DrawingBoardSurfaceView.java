@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
             switch (msg.what) {
                 case MESSAGE_UPDATA_UI: {
                     int[] data = (int[]) msg.obj;
-                    aliveHintTextView.setText(String.valueOf(data[0]));
+                    aliveHintTextView.setText(""+data[0]+":"+data[2]+":"+data[3]);
                     generationTextView.setText(String.valueOf(data[1]));
                     break;
                 }
@@ -190,14 +191,15 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
             while (!mIsPaused.get()) {
                 try {
                     creatures.setLimit(limit);
-                    creatures.nextTime();
+                    mIsPaused.set(creatures.nextTime());
                     if (mHolder.getSurface().isValid()) {
                         canvas = mHolder.lockCanvas();
                     }
                     if (canvas != null && canvas.getWidth() > 0) {
                         draw(canvas, paint);
                         Message msg = new Message();
-                        int[] data = {creatures.getAliveNum(), creatures.getGeneration()};
+                        int[] data = {creatures.getAliveNum(), creatures.getGeneration(),
+                                creatures.getNewlife(),creatures.getDied()};
                         msg.obj = data;
                         mHandler.sendMessage(msg);
                     }

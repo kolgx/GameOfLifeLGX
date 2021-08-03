@@ -4,7 +4,7 @@
     <string name="load_sample">默认数组初始化</string>
     <string name="limit_set">开启边界线</string>
     <string name="about">关于...</string>
-    <string name="alive_creature_describe">活着的细胞个数：</string>
+    <string name="alive_creature_describe">细胞状态：</string>
     <string name="generation_describe">进化代数：</string>
     <string name="hint_black">黑色为空位置</string>
     <string name="hint_white">白色为一代细胞</string>

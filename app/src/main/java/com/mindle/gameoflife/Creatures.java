@@ -9,6 +9,8 @@ public class Creatures {
 
     private int num;
     private int aliveNum;
+    private int newlife;
+    private int died = 0;
     private int[][] livingStatus;
     private int[][] nodesTmp;
     private int generation;
@@ -47,7 +49,7 @@ public class Creatures {
 
     public void setLimit(boolean limit){this.isLimit = limit;}
 
-    public void nextTime() {
+    public boolean nextTime() {
         generation++;
         for (int i = 0; i < num; i++) {
             for (int j = 0; j < num; j++) {
@@ -81,6 +83,9 @@ public class Creatures {
             }
         }
 
+        boolean same = ifChange();
+        countDied();
+
         for (int i = 0; i < num; i++) {
             for (int j = 0; j < num; j++) {
                 livingStatus[i][j] = nodesTmp[i][j];
@@ -88,10 +93,40 @@ public class Creatures {
         }
 
         calculateAliveNum();
+        return same;
+    }
+
+    private boolean ifChange(){
+        for(int i = 0; i<num; i++){
+            for(int j = 0; j<num;j++){
+                if (livingStatus[i][j] != nodesTmp[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void countDied(){
+        died = 0;
+        for(int i = 0; i<num; i++){
+            for(int j = 0; j<num;j++){
+                if(nodesTmp[i][j]==0&&livingStatus[i][j]!=0)
+                    died++;
+            }
+        }
     }
 
     public int getAliveNum() {
         return aliveNum;
+    }
+
+    public int getNewlife(){
+        return newlife;
+    }
+
+    public int getDied(){
+        return died;
     }
 
     public int getGeneration() {
@@ -115,10 +150,13 @@ public class Creatures {
 
     private void calculateAliveNum() {
         aliveNum = 0;
+        newlife = 0;
         for (int i = 0; i < num; i++) {
             for (int j = 0; j < num; j++) {
                 if (livingStatus[i][j] != 0) {
                     aliveNum++;
+                    if (livingStatus[i][j] == 1)
+                        newlife++;
                 }
             }
         }

@@ -75,7 +75,7 @@ public class GamePageActivity extends AppCompatActivity {
                     surfaceView.setSleepTime(1000);
                     break;
                 case R.id.radioButton2:
-                    surfaceView.setSleepTime(100);
+                    surfaceView.setSleepTime(500);
                     break;
                 case R.id.radioButton3:
                     surfaceView.setSleepTime(100);
@@ -97,7 +97,6 @@ public class GamePageActivity extends AppCompatActivity {
                 onContinueButton();
             }
         });
-
     }
 
     @Override

@@ -11,12 +11,16 @@
     <item
         android:id="@+id/menu_load_sample"
         android:title="@string/load_sample"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_limit"
-        android:title="@string/limit_set" />
+        app:showAsAction="never" />
+    <item android:title="演化控制" >
+        <menu >
+            <item
+                android:id="@+id/menu_limit"
+                android:title="@string/limit_set" />
+        </menu>
+    </item>
     <item
         android:id="@+id/menu_about"
         android:title="@string/about"
-        app:showAsAction="never"/>
+        app:showAsAction="never"></item>
 </menu>
