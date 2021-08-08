@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,6 +22,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     private static final String TAG = "DrawingBoardSurfaceView";
     private static final int MESSAGE_UPDATA_UI = 0;
     private static int num = 100;
+
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -29,6 +31,11 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
                     int[] data = (int[]) msg.obj;
                     aliveHintTextView.setText(""+data[0]+":"+data[2]+":"+data[3]);
                     generationTextView.setText(String.valueOf(data[1]));
+                    if(data[2]==data[3]&&data[2]==0){
+                        mButton.setText("开始");
+                        mButton.setTextColor(Color.GRAY);
+                        mButton.setEnabled(false);
+                    }
                     break;
                 }
                 default:
@@ -42,6 +49,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     private Creatures creatures;
     private TextView aliveHintTextView;
     private TextView generationTextView;
+    private Button mButton;
     private float mGridUnit;
 
     private AtomicLong sleepTime = new AtomicLong(1000);
@@ -98,6 +106,10 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
 
     public void setGenerationTextView(TextView textView) {
         generationTextView = textView;
+    }
+
+    public void setmButton(Button mButton) {
+        this.mButton = mButton;
     }
 
     public void initGame() {
@@ -192,6 +204,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
                 try {
                     creatures.setLimit(limit);
                     mIsPaused.set(creatures.nextTime());
+
                     if (mHolder.getSurface().isValid()) {
                         canvas = mHolder.lockCanvas();
                     }
@@ -214,6 +227,4 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
             }
         }
     }
-
-
 }

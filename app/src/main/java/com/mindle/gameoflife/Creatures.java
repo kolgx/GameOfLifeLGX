@@ -83,7 +83,7 @@ public class Creatures {
             }
         }
 
-        boolean same = ifChange();
+        boolean same = ifNotChange();
         countDied();
 
         for (int i = 0; i < num; i++) {
@@ -96,7 +96,7 @@ public class Creatures {
         return same;
     }
 
-    private boolean ifChange(){
+    private boolean ifNotChange(){
         for(int i = 0; i<num; i++){
             for(int j = 0; j<num;j++){
                 if (livingStatus[i][j] != nodesTmp[i][j]) {

@@ -67,6 +67,7 @@ public class GamePageActivity extends AppCompatActivity {
         speedGroup.check(R.id.radioButton1);
         surfaceView.setAliveHintTextView(aliveHintTextView);
         surfaceView.setGenerationTextView(generationTextView);
+        surfaceView.setmButton(mPauseContinueBtn);
         mProgressBar.setVisibility(View.GONE);
 
         speedGroup.setOnCheckedChangeListener((group, checkedId) -> {
