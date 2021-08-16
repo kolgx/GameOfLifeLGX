@@ -207,22 +207,26 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
 
                     if (mHolder.getSurface().isValid()) {
                         canvas = mHolder.lockCanvas();
-                    }
-                    if (canvas != null && canvas.getWidth() > 0) {
-                        draw(canvas, paint);
-                        Message msg = new Message();
-                        int[] data = {creatures.getAliveNum(), creatures.getGeneration(),
-                                creatures.getNewlife(),creatures.getDied()};
-                        msg.obj = data;
-                        mHandler.sendMessage(msg);
-                    }
-                    Thread.sleep(sleepTime.get());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (mHolder.getSurface().isValid()) {
+                        Log.e(TAG, "run: canvas lock");
+
+                        if (canvas != null && canvas.getWidth() > 0) {
+                            draw(canvas, paint);
+                            Message msg = new Message();
+                            int[] data = {creatures.getAliveNum(), creatures.getGeneration(),
+                                    creatures.getNewlife(),creatures.getDied()};
+                            msg.obj = data;
+                            mHandler.sendMessage(msg);
+                        }
+
+                        Log.e(TAG, "run: canvas unlock" );
                         mHolder.unlockCanvasAndPost(canvas);
                     }
+
+                    Log.e(TAG, "run: sleep start" );
+                    Thread.sleep(sleepTime.get());
+                    Log.e(TAG, "run: sleep stop" );
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
